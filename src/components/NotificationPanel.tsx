@@ -272,49 +272,33 @@ export const NotificationPanel = memo(({
                 </div>
               ) : (
                 <div className="divide-y divide-white/5 space-y-1">
-                  {sortedNotifs.map((item) => {
-                    const isNewDever = !item.read && (
-                      item.message.toLowerCase().includes('novo dever') || 
-                      item.message.toLowerCase().includes('novo dever:') || 
-                      item.message.toLowerCase().includes('adicionou tarefa') || 
-                      item.message.toLowerCase().includes('marcou a tarefa') || 
-                      item.message.toLowerCase().includes('tarefa criada') || 
-                      item.message.toLowerCase().includes('nova tarefa')
-                    );
+                  {sortedNotifs.map((item) => (
+                    <div 
+                      key={item.id}
+                      onClick={() => onMarkRead(item.id)}
+                      className={`p-3 text-left cursor-pointer flex items-start gap-2.5 transition-all rounded-xl mt-1.5 first:mt-0 ${
+                        !item.read 
+                          ? 'bg-pink-500/5 hover:bg-pink-500/10 border-l-3 border-pink-400 shadow-sm' 
+                          : 'hover:bg-white/5 opacity-70'
+                      }`}
+                    >
+                      {/* Icon */}
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-base flex-shrink-0 ${
+                        !item.read ? 'bg-pink-500/15 text-pink-300' : 'bg-slate-800 text-zinc-400'
+                      }`}>
+                        {item.icon || '🔔'}
+                      </div>
 
-                    return (
-                      <div 
-                        key={item.id}
-                        onClick={() => onMarkRead(item.id)}
-                        className={`p-3 text-left cursor-pointer flex items-start gap-2.5 transition-all rounded-xl mt-1.5 first:mt-0 ${
-                          isNewDever
-                            ? 'dever-pulse-card border border-emerald-500/30'
-                            : !item.read 
-                              ? 'bg-pink-500/5 hover:bg-pink-500/10 border-l-3 border-pink-400 shadow-sm' 
-                              : 'hover:bg-white/5 opacity-70'
-                        }`}
-                      >
-                        {/* Icon */}
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-base flex-shrink-0 ${
-                          isNewDever
-                            ? 'bg-emerald-500/25 text-emerald-300 ring-1 ring-emerald-500/40 animate-bounce'
-                            : !item.read 
-                              ? 'bg-pink-500/15 text-pink-300' 
-                              : 'bg-slate-800 text-zinc-400'
-                        }`}>
-                          {item.icon || '🔔'}
-                        </div>
-
-                        {/* Content details */}
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-[11.5px] leading-normal font-sans tracking-wide ${isNewDever ? 'text-emerald-100 font-bold' : !item.read ? 'text-white font-semibold' : 'text-zinc-300'}`}>
-                            {item.message}
-                          </p>
-                          <span className={`text-[9px] font-mono mt-0.5 flex items-center gap-1 leading-none ${isNewDever ? 'text-emerald-400/80' : 'text-zinc-500'}`}>
-                            <Clock className="w-2.5 h-2.5" />
-                            {new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </div>
+                      {/* Content details */}
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-[11.5px] leading-normal font-sans tracking-wide ${!item.read ? 'text-white font-semibold' : 'text-zinc-300'}`}>
+                          {item.message}
+                        </p>
+                        <span className="text-[9px] text-zinc-500 font-mono mt-0.5 flex items-center gap-1 leading-none">
+                          <Clock className="w-2.5 h-2.5" />
+                          {new Date(item.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
 
                       {/* Manual check indicator */}
                       {!item.read && (
@@ -331,8 +315,7 @@ export const NotificationPanel = memo(({
                         </button>
                       )}
                     </div>
-                    );
-                  })}
+                  ))}
                 </div>
               )}
             </div>

@@ -125,34 +125,12 @@ Analise a entrada no contexto do nosso bate-papo, hábitos e tarefas. Determine 
 Crie e retorne um objeto JSON que represente essa classificação exacta conforme o schema exigido.`;
 
       let resultObj: any = null;
-      let openAiErrorMsg = "";
+      let geminiErrorMsg = "";
 
-      // Primary attempt: Try OpenAI if the token is supplied in environment config
-      if (process.env.OPENAI_API_KEY) {
+      // Primary attempt: Try Gemini first, as it is native, extremely fast, free, and highly available in AI Studio
+      if (process.env.GEMINI_API_KEY) {
         try {
-          console.log("[Sintonia Voz IA] Consultando OpenAI API (gpt-4o-mini)...");
-          const openai = getOpenAIClient();
-          const completion = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-              { role: "system", content: systemInstruction },
-              { role: "user", content: prompt }
-            ],
-            response_format: { type: "json_object" },
-            temperature: 0.7
-          });
-          const rawText = completion.choices[0]?.message?.content || "{}";
-          resultObj = JSON.parse(rawText.trim());
-        } catch (openaiErr: any) {
-          openAiErrorMsg = openaiErr?.message || String(openaiErr);
-          console.warn("[Sintonia Voz IA] Falha de rota da OpenAI, recorrendo ao Gemini Default:", openAiErrorMsg);
-        }
-      }
-
-      // Default fallback: Always available Gemini 3.5-flash
-      if (!resultObj) {
-        console.log("[Sintonia Voz IA] Consultando Gemini API (gemini-3.5-flash)...");
-        try {
+          console.log("[Sintonia Voz IA] Consultando Gemini API (gemini-3.5-flash)...");
           const ai = getGeminiClient();
           const response = await ai.models.generateContent({
             model: "gemini-3.5-flash",
@@ -200,28 +178,50 @@ Crie e retorne um objeto JSON que represente essa classificação exacta conform
           const responseString = response.text || "{}";
           resultObj = JSON.parse(responseString.trim());
         } catch (geminiErr: any) {
-          const geminiErrorMsg = geminiErr.message || String(geminiErr);
-          console.error("[Sintonia Voz IA] Falha na rota do Gemini:", geminiErrorMsg);
+          geminiErrorMsg = geminiErr.message || String(geminiErr);
+          console.warn("[Sintonia Voz IA] Falha de rota do Gemini, recorrendo ao OpenAI:", geminiErrorMsg);
+        }
+      }
+
+      // Secondary attempt: Fallback to OpenAI if Gemini failed or is not configured
+      if (!resultObj && process.env.OPENAI_API_KEY) {
+        try {
+          console.log("[Sintonia Voz IA] Consultando OpenAI API (gpt-4o-mini)...");
+          const openai = getOpenAIClient();
+          const completion = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+              { role: "system", content: systemInstruction },
+              { role: "user", content: prompt }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.7
+          });
+          const rawText = completion.choices[0]?.message?.content || "{}";
+          resultObj = JSON.parse(rawText.trim());
+        } catch (openaiErr: any) {
+          const openAiErrorMsg = openaiErr?.message || String(openaiErr);
+          console.error("[Sintonia Voz IA] Falha na rota do OpenAI:", openAiErrorMsg);
           
           let detailsText = "";
-          if (process.env.OPENAI_API_KEY) {
-            if (openAiErrorMsg.toLowerCase().includes("quota") || openAiErrorMsg.toLowerCase().includes("429")) {
-              detailsText += "1. **ChatGPT**: Ocorreu um erro de saldo ou cota excedida (Erro 429 - Quota Exceeded) na sua chave de API da OpenAI. Verifique seus créditos no painel da OpenAI.\n";
-            } else {
-              detailsText += `1. **ChatGPT**: Falha inesperada. Detalhe: ${openAiErrorMsg}\n`;
-            }
-          } else {
-            detailsText += "1. **ChatGPT**: A chave de API `OPENAI_API_KEY` não está configurada.\n";
-          }
-
           if (process.env.GEMINI_API_KEY) {
             if (geminiErrorMsg.toLowerCase().includes("quota") || geminiErrorMsg.toLowerCase().includes("429")) {
-              detailsText += "2. **Gemini**: Ocorreu um erro de cota ou limitação (429) no provedor do Gemini.\n";
+              detailsText += "1. **Gemini**: Ocorreu um erro de cota ou limitação (429) no provedor do Gemini.\n";
             } else {
-              detailsText += `2. **Gemini**: Falha ao processar. Detalhe: ${geminiErrorMsg}\n`;
+              detailsText += `1. **Gemini**: Falha ao processar. Detalhe: ${geminiErrorMsg}\n`;
             }
           } else {
-            detailsText += "2. **Gemini**: A chave de API `GEMINI_API_KEY` padrão também não está configurada ou falhou.\n";
+            detailsText += "1. **Gemini**: A chave de API `GEMINI_API_KEY` não está configurada.\n";
+          }
+
+          if (process.env.OPENAI_API_KEY) {
+            if (openAiErrorMsg.toLowerCase().includes("quota") || openAiErrorMsg.toLowerCase().includes("429")) {
+              detailsText += "2. **ChatGPT**: Ocorreu um erro de saldo ou cota excedida (Erro 429 - Quota Exceeded) na sua chave de API da OpenAI. Verifique seus créditos no painel da OpenAI.\n";
+            } else {
+              detailsText += `2. **ChatGPT**: Falha inesperada. Detalhe: ${openAiErrorMsg}\n`;
+            }
+          } else {
+            detailsText += "2. **ChatGPT**: A chave de API `OPENAI_API_KEY` não está configurada.\n";
           }
 
           resultObj = {
@@ -231,7 +231,7 @@ Crie e retorne um objeto JSON que represente essa classificação exacta conform
             category: "",
             priority: "",
             voiceResponse: "Por favor, configure suas chaves de API no menu de Secrets para habilitar a inteligência artificial.",
-            textChatResponse: `Olá! Sentimos muito, mas não conseguimos estabelecer contato com nenhum dos nossos cérebros de inteligência artificial no momento. Aqui estão os detalhes das tentativas de conexão:\n\n${detailsText}\n\n💡 **Dica de Solução**: Por favor, acessem o menu principal do AI Studio clicando no ícone de engrenagem (Configurações) no canto superior direito e selecionem **Secrets**. Confiram se as chaves \`OPENAI_API_KEY\` e/ou \`GEMINI_API_KEY\` estão cadastradas corretamente!`
+            textChatResponse: `Olá! Sentimos muito, mas não conseguimos estabelecer contato com nenhum dos nossos cérebros de inteligência artificial no momento. Aqui estão os detalhes das tentativas de conexão:\n\n${detailsText}\n\n💡 **Dica de Solução**: Por favor, acessem o menu principal do AI Studio clicando no ícone de engrenagem (Configurações) no canto superior direito e selecionem **Secrets**. Confiram se as chaves \`GEMINI_API_KEY\` e/ou \`OPENAI_API_KEY\` estão cadastradas corretamente!`
           };
         }
       }

@@ -60,7 +60,7 @@ export const VoiceAssistantCoach = memo(({
   const [chatLog, setChatLog] = useState<{ sender: 'user' | 'ai'; text: string; time: string; action?: boolean }[]>([
     { 
       sender: 'ai', 
-      text: 'Olá! Sou seu conselheiro e parceiro de conversas do Sintonia, integrado ao ChatGPT da OpenAI! 🧠💬 Agora sou uma ferramenta completa de bate-papo! Além de me ditar e agendar hábitos e tarefas prontas, você pode me pedir conselhos, reflexões românticas de relacionamento, ideias criativas de encontros ou desabafar sobre o dia. O que gostaria de conversar comigo hoje?', 
+      text: 'Olá! Sou seu conselheiro e parceiro de conversas do Sintonia, integrado às inteligências artificiais do Gemini e ChatGPT! 🧠💬 Agora sou uma ferramenta completa de bate-papo! Além de me ditar e agendar hábitos e tarefas prontas, você pode me pedir conselhos, reflexões românticas de relacionamento, ideias criativas de encontros ou desabafar sobre o dia. O que gostaria de conversar comigo hoje?', 
       time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) 
     }
   ]);
@@ -259,9 +259,11 @@ export const VoiceAssistantCoach = memo(({
     } catch (error: any) {
       console.error("[Sintonia Voz IA Error]", error);
       const errorMessage = error?.message || "";
-      let fallbackReply = "Ops! Ocorreu um erro ao falar com a Inteligência Artificial. Por favor, certifique-se de configurar a chave OPENAI_API_KEY no painel de Secrets (Configurações > Secrets) do AI Studio.";
+      let fallbackReply = "Ops! Ocorreu um erro ao falar com a Inteligência Artificial. Por favor, certifique-se de configurar a chave GEMINI_API_KEY no painel de Secrets (Configurações > Secrets) do AI Studio.";
       
-      if (errorMessage.includes("OPENAI_API_KEY") || errorMessage.includes("OpenAI")) {
+      if (errorMessage.includes("GEMINI_API_KEY") || errorMessage.includes("Gemini")) {
+        fallbackReply = "A chave de API do Gemini (GEMINI_API_KEY) não foi encontrada ou é inválida. Por favor, configure-a no menu do AI Studio (ícone de engrenagem no canto superior direito > Secrets).";
+      } else if (errorMessage.includes("OPENAI_API_KEY") || errorMessage.includes("OpenAI")) {
         fallbackReply = "A chave de API do ChatGPT (OPENAI_API_KEY) não foi encontrada ou é inválida. Por favor, configure-a no menu do AI Studio (ícone de engrenagem no canto superior direito > Secrets).";
       } else if (errorMessage) {
         fallbackReply = `Erro detectado: ${errorMessage} Por favor, verifique suas chaves de API no painel de Secrets do AI Studio.`;

@@ -345,31 +345,3 @@ body.light-mode ::-webkit-scrollbar-thumb {
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Subtle glowing pulse animations for 'Novo Dever' notifications */
-@keyframes delicateGlowPulse {
-  0% {
-    box-shadow: 0 0 4px rgba(16, 185, 129, 0.2), inset 0 0 2px rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.5), inset 0 0 6px rgba(16, 185, 129, 0.2);
-    border-color: rgba(52, 211, 153, 0.85);
-  }
-  100% {
-    box-shadow: 0 0 4px rgba(16, 185, 129, 0.2), inset 0 0 2px rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.35);
-  }
-}
-
-.dever-pulse-card {
-  animation: delicateGlowPulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  background: rgba(16, 185, 129, 0.08) !important;
-  border-left-width: 3px !important;
-  border-left-color: #10b981 !important;
-}
-
-body.light-mode .dever-pulse-card {
-  background: rgba(16, 185, 129, 0.06) !important;
-}
-
-
