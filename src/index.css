@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --bg-primary: #0a0a12;
+  --bg-card: rgba(18, 18, 32, 0.8);
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --border-primary: rgba(255, 255, 255, 0.07);
+  --bg-button: rgba(255, 255, 255, 0.06);
+  --bg-input: rgba(7, 7, 12, 0.6);
+  --green-gradient: linear-gradient(135deg, #10b981, #059669);
+  --green-shadow: rgba(16, 185, 129, 0.2);
+}
+
+body.light-mode {
+  --bg-primary: #f3f4f6;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --text-primary: #111827;
+  --text-secondary: #5a6474;
+  --border-primary: rgba(0, 0, 0, 0.08);
+  --bg-button: rgba(0, 0, 0, 0.04);
+  --bg-input: rgba(255, 255, 255, 0.9);
+  --green-shadow: rgba(16, 185, 129, 0.1);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.border-primary {
+  border-color: var(--border-primary);
+}
+
+.bg-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+}
+
+.bg-input {
+  background: var(--bg-input);
+}
+
+.glass-effect {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Base custom interactive states */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(13, 13, 24, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-primary);
+  padding: 8px 4px;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+body.light-mode .bottom-nav {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 8px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 10px;
+  min-width: 52px;
+}
+
+.bottom-nav-active {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  font-weight: bold;
+}
+
+.couple-name-highlight {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.toast {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.top-notification {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+  animation: slideDown 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -24px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.top-notification-content {
+  background: rgba(16, 185, 129, 0.97);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.photo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 2px solid #10b981;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.photo-circle:hover {
+  border-color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+  transform: scale(1.05);
+}
+
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  font-size: 14px;
+  color: white;
+  border-radius: 50%;
+}
+
+.photo-circle:hover .photo-overlay {
+  opacity: 1;
+}
+
+.mood-btn {
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 10px;
+  font-size: 1.45rem;
+}
+
+.mood-btn:hover {
+  transform: scale(1.22);
+}
+
+.mood-btn.selected {
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.notif-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #ef4444;
+  color: white;
+  font-size: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+/* Custom switch button for theme options */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--border-primary);
+  border: 1px solid var(--border-primary);
+  transition: 0.3s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "🌙";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  font-size: 9px;
+}
+
+input:checked + .slider {
+  background-color: #10b981;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+  content: "☀️";
+}
+
+/* Loader style */
+.loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #10b981;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+body.light-mode .loading-spinner {
+  border: 3px solid rgba(0, 0, 0, 0.08);
+  border-top-color: #10b981;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dynamic smooth fade transition between main sub-sections */
+#root main > div {
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle glowing pulse animations for 'Novo Dever' notifications */
+@keyframes delicateGlowPulse {
+  0% {
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.2), inset 0 0 2px rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.5), inset 0 0 6px rgba(16, 185, 129, 0.2);
+    border-color: rgba(52, 211, 153, 0.85);
+  }
+  100% {
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.2), inset 0 0 2px rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+}
+
+.dever-pulse-card {
+  animation: delicateGlowPulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-left-width: 3px !important;
+  border-left-color: #10b981 !important;
+}
+
+body.light-mode .dever-pulse-card {
+  background: rgba(16, 185, 129, 0.06) !important;
+}
+
+

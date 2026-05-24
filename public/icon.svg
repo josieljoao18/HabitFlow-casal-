@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Rich background gradient matching our dark UI themes -->
+    <radialGradient id="bg-grad" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#090d16" />
+    </radialGradient>
+    
+    <!-- Neon pink glow for the outer heart -->
+    <radialGradient id="glow-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="100%" height="100%" rx="128" fill="url(#bg-grad)" />
+
+  <!-- Ambient Glow -->
+  <circle cx="256" cy="240" r="180" fill="url(#glow-grad)" />
+
+  <!-- Cute Star 1 -->
+  <path d="M120 140 L123 155 L138 158 L123 161 L120 176 L117 161 L102 158 L117 155 Z" fill="#facc15" opacity="0.8" />
+  
+  <!-- Cute Star 2 -->
+  <path d="M380 340 L382 350 L392 352 L382 354 L380 364 L378 354 L368 352 L378 350 Z" fill="#38bdf8" opacity="0.8" />
+
+  <!-- Shooting Starlight Streak -->
+  <path d="M150 360 C 220 310, 310 210, 390 120" stroke="qradient" stroke-width="4" stroke-linecap="round" stroke-dasharray="8,6" opacity="0.4" />
+  
+  <!-- Glowing Duo Couple Heart Paths -->
+  <g transform="translate(256, 240) scale(4.4) translate(-24, -24)">
+    <!-- Base shadow/underlay -->
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Inner warm overlay -->
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ec4899" fill-opacity="0.95" transform="scale(0.8) translate(3, 3)" />
+    <!-- Golden Core Sparkle -->
+    <path d="M12 7.5 C12 6.5, 12 6.5, 13 6.5 C12 6.5, 12 5.5, 12 5.5 C12 6.5, 12 6.5, 11 6.5 C12 6.5, 12 7.5, 12 7.5 Z" fill="#ffffff" />
+  </g>
+  
+  <!-- Mini Heart Companion -->
+  <path d="M256 360 C 256 355, 252 352, 248 352 C 243 352, 240 355, 240 360 C 240 365, 246 369, 256 374 C 266 369, 272 365, 272 360 C 272 355, 269 352, 264 352 C 260 352, 256 355, 256 360 Z" fill="#6366f1" />
+
+  <!-- Smooth overlay ring decoration -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="none" stroke="#ec4899" stroke-opacity="0.1" stroke-width="8" />
+</svg>

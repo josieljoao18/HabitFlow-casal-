@@ -1,0 +1,6 @@
+{
+  "name": "HabitFlow-Casal",
+  "description": "Aplicativo de hábitos e tarefas diárias para casais cristãos",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "HabitFlow Casal - Rotina e Amor",
+  "short_name": "HabitFlow",
+  "description": "O sistema operacional completo para o casal planejar, cooperar nos deveres e evoluir lado a lado.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#ec4899",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "categories": ["utilities", "lifestyle", "productivity"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
